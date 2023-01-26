@@ -17,10 +17,10 @@ func ConnectDB() {
 	clientOptions := options.Client().ApplyURI(os.Getenv("DB_URL"))
 
 	client, err := mongo.Connect(context.TODO(), clientOptions)
-	errorhandler.HandleError(err, "error while connecting to db")
+	errorhandler.HandleError(err)
 
 	err = client.Ping(context.TODO(), nil)
-	errorhandler.HandleError(err, "ping not consistent")
+	errorhandler.HandleError(err)
 
 	colors.Print(colors.ColorCyan, "Connected to MongoDB!")
 

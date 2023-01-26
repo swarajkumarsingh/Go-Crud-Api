@@ -17,7 +17,7 @@ import (
 
 func CreateUser(c *gin.Context) {
 
-	defer errorhandler.Recovery(c)
+	defer errorhandler.Recovery(c, 403)
 
 	// Get data off req.body
 	var body struct {
@@ -32,7 +32,7 @@ func CreateUser(c *gin.Context) {
 
 	// Create a User
 	result, err := db.UserDB.InsertOne(context.TODO(), &user)
-	errorhandler.HandleError(err, "error while creating user")
+	errorhandler.HandleError(err)
 
 	fmt.Println("User", result)
 
@@ -45,7 +45,7 @@ func CreateUser(c *gin.Context) {
 
 func UpdateUser(c *gin.Context) {
 
-	defer errorhandler.Recovery(c)
+	defer errorhandler.Recovery(c, 403)
 
 	// Get data off req.body
 	var body struct {
@@ -60,16 +60,16 @@ func UpdateUser(c *gin.Context) {
 
 	user := models.User{Name: body.Name, Email: body.Email, Phone: body.Phone}
 	objectId, err := primitive.ObjectIDFromHex(id)
-	errorhandler.HandleError(err, "error while creating user")
+	errorhandler.HandleError(err)
 
 	// Create a User
 	update := bson.M{"$set": bson.M{"Name": user.Name, "Email": user.Email, "Phone": user.Email}}
 
 	result, err := db.UserDB.UpdateOne(context.TODO(), bson.M{"_id": objectId}, update)
-	errorhandler.HandleError(err, "error while creating user")
+	errorhandler.HandleError(err)
 
 	if result.ModifiedCount == 0 {
-		errorhandler.HandleError(err, "User could not be updated")
+		errorhandler.HandleError(err)
 		return
 	}
 
@@ -80,19 +80,18 @@ func UpdateUser(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	defer errorhandler.Recovery(c)
+	defer errorhandler.Recovery(c, 403)
 
 	// Get id from params
 	id := c.Param("id")
 	objectId, err := primitive.ObjectIDFromHex(id)
-	errorhandler.HandleError(err, "error type casting id")
+	errorhandler.HandleError(err)
 
 	var foundUser models.User
 
 	// find user based on that id
 	err = db.UserDB.FindOne(context.TODO(), bson.M{"_id": objectId}).Decode(&foundUser)
-	errorhandler.HandleError(err, "error while fetching user")
-
+	errorhandler.HandleError(err)
 
 	// Return it in response
 	c.JSON(http.StatusOK, gin.H{
@@ -102,19 +101,19 @@ func GetUser(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context) {
-	defer errorhandler.Recovery(c)
+	defer errorhandler.Recovery(c, 403)
 
 	// Get id from params
 	id := c.Param("id")
 	objectId, err := primitive.ObjectIDFromHex(id)
-	errorhandler.HandleError(err, "error type casting id")
+	errorhandler.HandleError(err)
 
 	// find user based on that id
 	deleteResult, err := db.UserDB.DeleteOne(context.TODO(), bson.M{"_id": objectId})
-	errorhandler.HandleError(err, "error while deleting user")
+	errorhandler.HandleError(err)
 
 	if deleteResult.DeletedCount == 0 {
-		errorhandler.HandleErrorWithOutError("Could not delete user")
+		errorhandler.HandleErrorWithMsg("Could not delete user")
 		return
 	}
 
@@ -125,7 +124,7 @@ func DeleteUser(c *gin.Context) {
 }
 
 func GetUsers(c *gin.Context) {
-	defer errorhandler.Recovery(c)
+	defer errorhandler.Recovery(c, 403)
 
 	var results []models.User
 	findOptions := options.Find()
@@ -133,7 +132,7 @@ func GetUsers(c *gin.Context) {
 
 	// find user based on that id
 	cursor, err := db.UserDB.Find(context.TODO(), bson.D{{}}, findOptions)
-	errorhandler.HandleError(err, "error while fetching user")
+	errorhandler.HandleError(err)
 
 	for cursor.Next(context.TODO()) {
 		//Create a value into which the single document can be decoded

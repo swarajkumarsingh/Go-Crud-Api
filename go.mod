@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/fatih/color v1.14.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/getsentry/sentry-go v0.17.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.8.2 // indirect
 	github.com/githubnemo/CompileDaemon v1.4.0 // indirect
@@ -13,11 +14,11 @@ require (
 	github.com/go-playground/validator/v10 v10.11.1 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
-	github.com/golang/snappy v0.0.1 // indirect
+	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.13.6 // indirect
+	github.com/klauspost/compress v1.15.11 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect

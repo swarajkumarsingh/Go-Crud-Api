@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/swarajkumarsingh/go-build/config"
-	"github.com/swarajkumarsingh/go-build/controllers"
 	"github.com/swarajkumarsingh/go-build/db"
+	"github.com/swarajkumarsingh/go-build/routes"
 )
 
 func init() {
@@ -25,14 +25,10 @@ func main() {
 	db.ConnectDB()
 
 	// App Routes
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Logger())
 
-	r.GET("/", controllers.HealthCheck)
-	r.GET("/users", controllers.GetUsers)
-	r.POST("/user", controllers.CreateUser)
-	r.GET("/user/:id", controllers.GetUser)
-	r.PUT("/user/:id", controllers.UpdateUser)
-	r.DELETE("/user/:id", controllers.DeleteUser)
+	routes.UserRoutes(r)
 
 	fmt.Println("Server running on port " + PORT)
 	r.Run("127.0.0.1:" + PORT)
